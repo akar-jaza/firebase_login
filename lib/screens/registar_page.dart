@@ -35,15 +35,14 @@ class _RegisterPageState extends State<RegisterPage> {
         print('Failed with error code: ${e.code}');
         print(e.message);
       }
-    } else {
-      SnackBar(
-        content: const Text('passowrd is not equal!'),
-      );
+    } else if (passwordConfirmed() == false) {
+      print('password is not equal');
     }
   }
 
   bool passwordConfirmed() {
-    if (_passwordController == _passwordConfirmedController) {
+    if (_passwordController.text.trim() ==
+        _passwordConfirmedController.text.trim()) {
       return true;
     } else {
       return false;
@@ -114,26 +113,23 @@ class _RegisterPageState extends State<RegisterPage> {
                   SizedBox(height: 50),
 
                   //* email textfield
-                  TextfieldWidget(
+                  EmailTextfieldWidget(
                     textEditingController: _emailController,
                     hintText: 'Email',
-                    obsecureText: false,
                     textInputType: TextInputType.emailAddress,
                   ),
                   SizedBox(height: 10),
 
                   //* password textfield
-                  TextfieldWidget(
+                  PasswordTextfieldWidget(
                     textEditingController: _passwordController,
                     hintText: 'Password',
-                    obsecureText: true,
                   ),
                   SizedBox(height: 10),
 
-                  TextfieldWidget(
+                  PasswordTextfieldWidget(
                     textEditingController: _passwordConfirmedController,
                     hintText: 'Confirm Password',
-                    obsecureText: true,
                   ),
                   SizedBox(height: 10),
 

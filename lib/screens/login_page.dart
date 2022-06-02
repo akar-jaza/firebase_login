@@ -98,19 +98,17 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(height: 50),
 
                   //* email textfield
-                  TextfieldWidget(
+                  EmailTextfieldWidget(
                     textEditingController: _emailController,
                     hintText: 'Email',
-                    obsecureText: false,
                     textInputType: TextInputType.emailAddress,
                   ),
                   SizedBox(height: 10),
 
                   //* password textfield
-                  TextfieldWidget(
+                  PasswordTextfieldWidget(
                     textEditingController: _passwordController,
                     hintText: 'password',
-                    obsecureText: true,
                   ),
                   SizedBox(height: 10),
 
