@@ -26,10 +26,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: MainPage.id,
-      routes: {
-        MainPage.id: (context) => MainPage(),
-      },
+      home: MainPage(),
     );
   }
 }

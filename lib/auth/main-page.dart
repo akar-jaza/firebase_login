@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_login/screens/login-page.dart';
+import 'package:firebase_login/screens/registar-page.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/home-page.dart';
@@ -16,16 +16,15 @@ class MainPage extends StatelessWidget {
     return Scaffold(
       //User? : checking non null user
       body: StreamBuilder<User?>(
-        // authStateChanges() : listen for any auth changes
+        // authStateChanges() : listen for any auth changes, user logged in or not
         stream: FirebaseAuth.instance.authStateChanges(),
         //snapshot: gives us information for the user
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return HomePage();
           } else {
-            return LoginPage();
+            return RegisterPage();
           }
-          
         },
       ),
     );
