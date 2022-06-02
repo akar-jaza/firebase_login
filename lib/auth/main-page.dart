@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_login/screens/login-page.dart';
 import 'package:flutter/material.dart';
 
-import 'home-page.dart';
+import '../screens/home-page.dart';
 
 // main-page: seeing if we are logged in or not
 class MainPage extends StatelessWidget {

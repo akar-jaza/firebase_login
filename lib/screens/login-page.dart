@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
@@ -52,7 +53,20 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
     double padding = 0;
-    Platform.isWindows ? padding = 25 : padding = 20;
+    try {
+      if (Platform.isWindows) {
+        padding = 25;
+      } else if (Platform.isAndroid) {
+        padding = 20;
+      } else {
+        padding = 20;
+      }
+    } catch (e) {
+      if (kIsWeb) {
+        padding = 25;
+      }
+    }
+    // Platform.isWindows ? padding = 25 : padding = 20;
     return Scaffold(
       backgroundColor: Color(0xffF8F8F8),
       body: SafeArea(
