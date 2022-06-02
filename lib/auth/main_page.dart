@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_login/screens/registar-page.dart';
+import 'package:firebase_login/screens/registar_page.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/home-page.dart';

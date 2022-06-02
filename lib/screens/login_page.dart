@@ -4,22 +4,22 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
-import '../widgets/google-signIn-btn.dart';
 import '../widgets/textButton.dart';
 import '../widgets/textfield.dart';
 import 'dart:io' show Platform;
 import 'package:firebase_auth/firebase_auth.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
+  static const String id = 'first-screen';
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
-  final _passswordController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   bool isLoading = false;
   Future signIn() async {
@@ -27,7 +27,7 @@ class _RegisterPageState extends State<RegisterPage> {
       isLoading = true;
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
-        password: _passswordController.text.trim(),
+        password: _passwordController.text.trim(),
       );
     } on FirebaseAuthException catch (e) {
       print('Failed with error code: ${e.code}');
@@ -39,7 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void dispose() {
     _emailController.dispose();
-    _passswordController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -108,7 +108,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                   //* password textfield
                   TextfieldWidget(
-                    textEditingController: _passswordController,
+                    textEditingController: _passwordController,
                     hintText: 'password',
                     obsecureText: true,
                   ),
@@ -117,13 +117,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   //* sign in button
                   TextButtonWidget(
                     onPressed: signIn,
+                    title: 'Sign In with Email',
                   ),
                   SizedBox(
                     height: 10,
                   ),
-                  GoogleSignInBtn(
-                    onPressed: () {},
-                  ),
+                  // GoogleSignInBtn(
+                  //   onPressed: () {},
+                  // ),
                   SizedBox(height: 25),
                   //* not a memebr? sign in now
                   Row(
@@ -134,7 +135,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                         style: ButtonStyle(),
                         child: Text(
                           'Registar now',

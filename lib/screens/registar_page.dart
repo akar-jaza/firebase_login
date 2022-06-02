@@ -1,38 +1,52 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
+import 'package:firebase_login/screens/login_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
-import '../widgets/google-signIn-btn.dart';
 import '../widgets/textButton.dart';
 import '../widgets/textfield.dart';
 import 'dart:io' show Platform;
 import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
-  static const String id = 'first-screen';
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
-  final _passswordController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _passwordConfirmedController = TextEditingController();
 
   bool isLoading = false;
-  Future signIn() async {
-    try {
-      isLoading = true;
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passswordController.text.trim(),
+  Future signUp() async {
+    if (passwordConfirmed()) {
+      try {
+        isLoading = true;
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+      } on FirebaseAuthException catch (e) {
+        print('Failed with error code: ${e.code}');
+        print(e.message);
+      }
+    } else {
+      SnackBar(
+        content: const Text('passowrd is not equal!'),
       );
-    } on FirebaseAuthException catch (e) {
-      print('Failed with error code: ${e.code}');
-      print(e.message);
+    }
+  }
+
+  bool passwordConfirmed() {
+    if (_passwordController == _passwordConfirmedController) {
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -40,7 +54,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void dispose() {
     _emailController.dispose();
-    _passswordController.dispose();
+    _passwordController.dispose();
+    _passwordConfirmedController.dispose();
     super.dispose();
   }
 
@@ -84,14 +99,14 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(height: 50),
                   Text(
-                    'HELLO AGAIN!',
+                    'HELLO THERE!',
                     style: GoogleFonts.bebasNeue(
                       textStyle: TextStyle(fontSize: 50),
                     ),
                   ),
                   // SizedBox(height: 5),
                   Text(
-                    "Welcome back, you've been missed!",
+                    "Registar belew with your detail",
                     style: TextStyle(
                       fontSize: 20,
                     ),
@@ -109,36 +124,49 @@ class _LoginPageState extends State<LoginPage> {
 
                   //* password textfield
                   TextfieldWidget(
-                    textEditingController: _passswordController,
-                    hintText: 'password',
+                    textEditingController: _passwordController,
+                    hintText: 'Password',
                     obsecureText: true,
                   ),
                   SizedBox(height: 10),
 
-                  //* sign in button
+                  TextfieldWidget(
+                    textEditingController: _passwordConfirmedController,
+                    hintText: 'Confirm Password',
+                    obsecureText: true,
+                  ),
+                  SizedBox(height: 10),
+
+                  //* sign up button
                   TextButtonWidget(
-                    onPressed: signIn,
+                    onPressed: signUp,
+                    title: 'Sign Up',
                   ),
                   SizedBox(
                     height: 10,
                   ),
-                  GoogleSignInBtn(
-                    onPressed: () {},
-                  ),
+                  // GoogleSignInBtn(
+                  //   onPressed: () {},
+                  // ),
                   SizedBox(height: 25),
                   //* not a memebr? sign in now
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        'Not a member?',
+                        "I'm a member!",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginPage()));
+                        },
                         style: ButtonStyle(),
                         child: Text(
-                          'Registar now',
+                          'Log In',
                           style: TextStyle(
                             color: Colors.blue,
                           ),
