@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,12 +23,16 @@ class _LoginPageState extends State<LoginPage> {
 
   bool isLoading = false;
   Future signIn() async {
-    isLoading = true;
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      
-      email: _emailController.text.trim(),
-      password: _passswordController.text.trim(),
-    );
+    try {
+      isLoading = true;
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passswordController.text.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      print('Failed with error code: ${e.code}');
+      print(e.message);
+    }
   }
 
   // for ram management
