@@ -1,14 +1,16 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, use_build_context_synchronously
 
+import 'package:firebase_login/responsive/responsive.dart';
+import 'package:firebase_login/screens/forgot_password_page.dart';
 import 'package:firebase_login/screens/registar_page.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 import '../widgets/textButton.dart';
 import '../widgets/textfield.dart';
-import 'dart:io' show Platform;
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'home-page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -30,9 +32,17 @@ class _LoginPageState extends State<LoginPage> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+      Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
     } on FirebaseAuthException catch (e) {
-      print('Failed with error code: ${e.code}');
-      print(e.message);
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Text(e.message.toString()),
+          );
+        },
+      );
     }
   }
 
@@ -52,26 +62,13 @@ class _LoginPageState extends State<LoginPage> {
         statusBarColor: Color(0xffF8F8F8),
       ),
     );
-    double padding = 0;
-    try {
-      if (Platform.isWindows) {
-        padding = 25;
-      } else if (Platform.isAndroid) {
-        padding = 20;
-      } else {
-        padding = 20;
-      }
-    } catch (e) {
-      if (kIsWeb) {
-        padding = 25;
-      }
-    }
+
     // Platform.isWindows ? padding = 25 : padding = 20;
     return Scaffold(
       backgroundColor: Color(0xffF8F8F8),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(padding),
+          padding: EdgeInsets.all(responsivePadding()),
           child: Center(
             child: SingleChildScrollView(
               child: Column(
@@ -111,19 +108,30 @@ class _LoginPageState extends State<LoginPage> {
                     textEditingController: _passwordController,
                     hintText: 'password',
                   ),
+                  Row(
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ForgotPasswordPage(),
+                            ),
+                          );
+                        },
+                        child: Text('Forgot passowrd?'),
+                      ),
+                    ],
+                  ),
                   SizedBox(height: 10),
 
                   //* sign in button
                   TextButtonWidget(
                     onPressed: signIn,
                     title: 'Sign In with Email',
+                    icon: Icon(Icons.email_outlined),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  // GoogleSignInBtn(
-                  //   onPressed: () {},
-                  // ),
+
                   SizedBox(height: 25),
                   //* not a memebr? sign in now
                   Row(

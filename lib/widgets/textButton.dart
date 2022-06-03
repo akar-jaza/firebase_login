@@ -3,10 +3,15 @@
 import 'package:flutter/material.dart';
 
 class TextButtonWidget extends StatelessWidget {
-  TextButtonWidget({required this.onPressed, required this.title});
+  TextButtonWidget({
+    required this.onPressed,
+    required this.title,
+    this.icon
+  });
 
   VoidCallback onPressed;
   String title;
+  Icon? icon;
   @override
   Widget build(BuildContext context) {
     return TextButton(
@@ -22,7 +27,7 @@ class TextButtonWidget extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(right: 12),
-            child: Icon(Icons.email_outlined),
+            child: icon,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 15),

@@ -20,6 +20,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        dialogTheme: DialogTheme(
+          backgroundColor: Color(0xff1C1B1F),
+          contentTextStyle: TextStyle(
+            color: Color(0xffD0BCFF),
+          ),
+        ),
         inputDecorationTheme: InputDecorationTheme(
           floatingLabelStyle: TextStyle(color: Colors.deepPurple),
         ),
