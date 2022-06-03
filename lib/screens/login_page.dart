@@ -136,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        style: ButtonStyle(),
+                        // style: ButtonStyle(),
                         child: Text(
                           'Registar now',
                           style: TextStyle(
