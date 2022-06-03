@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_login/screens/login_page.dart';
 import 'package:firebase_login/screens/registar_page.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,7 @@ class MainPage extends StatelessWidget {
           if (snapshot.hasData) {
             return HomePage();
           } else {
-            return RegisterPage();
+            return LoginPage();
           }
         },
       ),

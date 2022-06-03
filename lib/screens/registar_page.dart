@@ -145,7 +145,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   //   onPressed: () {},
                   // ),
                   SizedBox(height: 25),
-                  //* not a memebr? sign in now
+                  //*Already a member? log in
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -155,12 +155,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const LoginPage()));
+                          Navigator.pop(context);
                         },
-                        style: ButtonStyle(),
                         child: Text(
                           'Log In',
                           style: TextStyle(
