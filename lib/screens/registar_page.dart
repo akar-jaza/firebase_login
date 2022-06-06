@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_login/responsive/responsive.dart';
 import 'package:firebase_login/screens/home-page.dart';
 import 'package:flutter/material.dart';
@@ -20,15 +21,27 @@ class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _passwordConfirmedController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _ageController = TextEditingController();
 
   bool isLoading = false;
   Future signUp() async {
     if (passwordConfirmed()) {
       try {
+        // * create user
         isLoading = true;
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
+        );
+
+        // * add user details
+        addUserDetails(
+          _firstNameController.text.trim(),
+          _lastNameController.text.trim(),
+          _emailController.text.trim(),
+          int.parse(_ageController.text.trim()),
         );
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => HomePage()));
@@ -39,6 +52,18 @@ class _RegisterPageState extends State<RegisterPage> {
     } else if (passwordConfirmed() == false) {
       print('password is not equal');
     }
+  }
+
+  Future addUserDetails(
+      String firstName, String lastName, String email, int age) async {
+    await FirebaseFirestore.instance.collection('users').add({
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+      'age': age,
+    });
+    //.collection(): collection drust datat
+    //.add(): field drust dakat
   }
 
   bool passwordConfirmed() {
@@ -55,7 +80,9 @@ class _RegisterPageState extends State<RegisterPage> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-    _passwordConfirmedController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _ageController.dispose();
     super.dispose();
   }
 
@@ -99,7 +126,27 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   SizedBox(height: 50),
+                  //* first name
+                  EmailTextfieldWidget(
+                    hintText: 'First Name',
+                    textEditingController: _firstNameController,
+                  ),
+                  SizedBox(height: 10),
 
+                  //* last name
+                  EmailTextfieldWidget(
+                    hintText: 'Last Name',
+                    textEditingController: _lastNameController,
+                  ),
+                  SizedBox(height: 10),
+
+                  //* age
+                  EmailTextfieldWidget(
+                    hintText: 'Age',
+                    textEditingController: _ageController,
+                    textInputType: TextInputType.number,
+                  ),
+                  SizedBox(height: 10),
                   //* email textfield
                   EmailTextfieldWidget(
                     textEditingController: _emailController,
