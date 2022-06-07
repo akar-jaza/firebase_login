@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   List<String> docIDs = [];
 
   // get doc IDs
+  Future? _getDocIds;
   Future getDocIDs() async {
     await FirebaseFirestore.instance
         .collection('users')
@@ -31,6 +32,7 @@ class _HomePageState extends State<HomePage> {
               docIDs.add(document.reference.id);
             }));
   }
+
   /*hande zanyari...
     get(): fetch'y(wargrtni) document,
     (snapshot) ba dlli xota danwsi chy mn nwsiwma snapshot, 
@@ -39,28 +41,49 @@ class _HomePageState extends State<HomePage> {
   */
 
   @override
+  void initState() {
+    _getDocIds = getDocIDs();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark
-        .copyWith(systemNavigationBarColor: Colors.white));
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle.dark.copyWith(
+        systemNavigationBarColor: Colors.white,
+        statusBarColor: Colors.deepPurpleAccent,
+      ),
+    );
     return Scaffold(
+      appBar: AppBar(
+        leading: Text(''),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              //redirect to login page after signout button is pressed
+              //it will clear all the paths and your history and launch LoginScreen
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                  (route) => false);
+            },
+            icon: Icon(Icons.logout_outlined),
+          )
+        ],
+        title: Text(
+          user.email!,
+          style: TextStyle(
+            fontSize: 20,
+          ),
+        ),
+      ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Text('signed in as: ${user.email!}'),
-            TextButton(
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-                //redirect to login page after signout button is pressed
-                //it will clear all the paths and your history and launch LoginScreen
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => LoginPage()),
-                    (route) => false);
-              },
-              child: Text('sign out'),
-            ),
             FutureBuilder(
-              future: getDocIDs(),
+              future: _getDocIds,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 return ListView.builder(
                   scrollDirection: Axis.vertical,

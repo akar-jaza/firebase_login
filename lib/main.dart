@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+
+
 import 'package:firebase_login/auth/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,6 +22,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.deepPurpleAccent,
+          titleTextStyle: TextStyle(color: Colors.white),
+          toolbarTextStyle: TextStyle(backgroundColor: Colors.white),
+        ),
         dialogTheme: DialogTheme(
           backgroundColor: Color(0xff1C1B1F),
           contentTextStyle: TextStyle(
