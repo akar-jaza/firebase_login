@@ -24,16 +24,27 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  bool isLoading = false;
   Future signIn() async {
     try {
-      isLoading = true;
+      //* loading widget
+      showDialog(
+          context: context,
+          builder: (context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
       Navigator.push(
-            context, MaterialPageRoute(builder: (context) => HomePage()));
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+      // agar circle indicator lanachu amash dabet
+      //Navigator.of(context).pop;
+
     } on FirebaseAuthException catch (e) {
       showDialog(
         context: context,
