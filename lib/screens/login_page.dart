@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, use_build_context_synchronously, non_constant_identifier_names
 
 import 'package:firebase_login/responsive/responsive.dart';
 import 'package:firebase_login/screens/forgot_password_page.dart';
@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import '../widgets/textButton.dart';
 import '../widgets/textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'home-page.dart';
 
@@ -21,19 +22,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  static final _emailController = TextEditingController();
+  static final _passwordController = TextEditingController();
+  bool showDialogWidget = true;
 
   Future signIn() async {
     try {
       //* loading widget
-      showDialog(
-          context: context,
-          builder: (context) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          });
+      Dialog(true);
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
@@ -42,9 +38,6 @@ class _LoginPageState extends State<LoginPage> {
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
       );
-      // agar circle indicator lanachu amash dabet
-      //Navigator.of(context).pop;
-
     } on FirebaseAuthException catch (e) {
       showDialog(
         context: context,
@@ -54,10 +47,20 @@ class _LoginPageState extends State<LoginPage> {
           );
         },
       );
+      print(e);
     }
   }
 
-  // for ram management
+  Center? Dialog(bool showDialog) {
+    if (showDialog = true) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      return null;
+    }
+  }
+
   @override
   void dispose() {
     _emailController.dispose();
