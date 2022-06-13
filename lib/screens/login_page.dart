@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, use_build_context_synchronously, non_constant_identifier_names
 
+import 'package:firebase_login/auth/sign_in_auth.dart';
 import 'package:firebase_login/responsive/responsive.dart';
 import 'package:firebase_login/screens/forgot_password_page.dart';
 import 'package:firebase_login/screens/registar_page.dart';
@@ -9,7 +10,7 @@ import 'package:flutter/services.dart';
 import '../widgets/textButton.dart';
 import '../widgets/textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import '../auth/sign_in_auth.dart';
 
 import 'home-page.dart';
 
@@ -22,14 +23,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  
   static final _emailController = TextEditingController();
   static final _passwordController = TextEditingController();
-  bool showDialogWidget = true;
 
   Future signIn() async {
     try {
       //* loading widget
-      Dialog(true);
+      ProgressIndicator(true);
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
@@ -51,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Center? Dialog(bool showDialog) {
+  Center? ProgressIndicator(bool showDialog) {
     if (showDialog = true) {
       return Center(
         child: CircularProgressIndicator(),
@@ -63,8 +64,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
     super.dispose();
   }
 
